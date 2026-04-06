@@ -11,7 +11,6 @@ const int sensorPins[] = {A0, A1, A2, A3, A4};
 int sensorValues[5] = {0, 0, 0, 0, 0};
 
 // --- PID Constants ---
-// NOTE: These values MUST be tuned for your specific robot's weight, motors, and battery.
 float Kp = 15.0; 
 float Ki = 0.0;  
 float Kd = 10.0; 
@@ -77,6 +76,8 @@ void readSensors() {
 void calculatePID() {
   P = error;
   I = I + error;
+  //To avoid integral windup
+  I = constrain(I,-50,50);
   D = error - previousError;
   
   // Standard PID Equation
